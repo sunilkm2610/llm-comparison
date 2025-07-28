@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
-import { History } from "lucide-react";
+import { History, Loader2 } from "lucide-react";
 import { ComparisonRecord } from "@/lib/ai-providers/type";
 
 function HistorySection({
@@ -8,11 +8,13 @@ function HistorySection({
   onSelectComparison,
   isOpen,
   onToggle,
+  loading,
 }: {
   history: ComparisonRecord[];
   onSelectComparison: (comparison: ComparisonRecord) => void;
   isOpen: boolean;
   onToggle: () => void;
+  loading: boolean;
 }) {
   return (
     <>
@@ -37,29 +39,37 @@ function HistorySection({
             </div>
 
             <div className="space-y-3">
-              {history.map((item) => (
-                <Card
-                  key={item.id}
-                  className="cursor-pointer hover:bg-muted/50 transition-colors"
-                  onClick={() => {
-                    onSelectComparison(item);
-                    onToggle();
-                  }}
-                >
-                  <CardContent className="p-3">
-                    <div className="text-sm font-medium mb-2 line-clamp-2">
-                      {item.prompt}
-                    </div>
-                    <div className="text-xs text-muted-foreground space-y-1">
-                      <div>{new Date(item.createdAt).toLocaleDateString()}</div>
-                      <div className="flex justify-between">
-                        <span>{item.successfulResponses}/3 success</span>
-                        <span>${item.totalCost.toFixed(4)}</span>
+              {loading ? (
+                <div className="flex justify-center items-center h-full">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </div>
+              ) : (
+                history.map((item) => (
+                  <Card
+                    key={item.id}
+                    className="cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => {
+                      onSelectComparison(item);
+                      onToggle();
+                    }}
+                  >
+                    <CardContent className="p-3">
+                      <div className="text-sm font-medium mb-2 line-clamp-2">
+                        {item.prompt}
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                      <div className="text-xs text-muted-foreground space-y-1">
+                        <div>
+                          {new Date(item.createdAt).toLocaleDateString()}
+                        </div>
+                        <div className="flex justify-between">
+                          <span>{item.successfulResponses}/3 success</span>
+                          <span>${item.totalCost.toFixed(4)}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
           </div>
         </div>

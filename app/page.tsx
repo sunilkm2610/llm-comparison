@@ -31,6 +31,7 @@ export default function AIComparison() {
   const [history, setHistory] = useState<ComparisonRecord[]>([]);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   const providers = [
     { name: "OpenAI", model: "gpt-4o" },
@@ -40,12 +41,15 @@ export default function AIComparison() {
 
   const loadHistory = async () => {
     if (historyLoaded) return;
+    setHistoryLoading(true);
     try {
       const historyData = await getComparisonHistoryAction();
       setHistory(historyData);
       setHistoryLoaded(true);
     } catch (err) {
       console.error("Failed to load history:", err);
+    } finally {
+      setHistoryLoading(false);
     }
   };
 
@@ -123,6 +127,7 @@ export default function AIComparison() {
         onSelectComparison={handleSelectComparison}
         isOpen={historyOpen}
         onToggle={handleHistoryToggle}
+        loading={historyLoading}
       />
 
       <div className="max-w-6xl mx-auto p-6 space-y-6">
