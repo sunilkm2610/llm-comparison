@@ -6,32 +6,24 @@ import {
   getComparisonHistory,
   getComparisonById,
 } from "@/lib/database-operations";
-import { AIResponse, ComparisonRecord } from "@/lib/ai-providers/type";
-
-export interface AIComparisonResult {
-  id: number;
-  responses: AIResponse[];
-  summary: {
-    totalTokens: number;
-    totalCost: number;
-    successfulResponses: number;
-    averageLatency: number;
-    providerStats: Record<
-      string,
-      {
-        tokens: number;
-        cost: number;
-        success: boolean;
-        latency: number;
-      }
-    >;
-  };
-  timestamp: string;
-}
+import {
+  UIAIComparisonResult,
+  ComparisonRecord,
+} from "@/lib/ai-providers/type";
+import { headers } from "next/headers";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function generateAIResponses(
   prompt: string
-): Promise<AIComparisonResult> {
+): Promise<UIAIComparisonResult> {
+  const headerList = await headers();
+  const ip = headerList.get("x-forwarded-for") || "127.0.0.1";
+
+  const allowed = rateLimit(ip);
+
+  if (!allowed) {
+    throw new Error("Rate limit exceeded. Please try again later.");
+  }
   try {
     // Validate input
     if (!prompt || prompt.trim().length === 0) {

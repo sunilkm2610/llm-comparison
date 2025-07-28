@@ -30,7 +30,8 @@ export interface AIProvider {
   generateResponse(prompt: string): Promise<AIResponse>;
 }
 
-export interface AIComparisonResult {
+export interface UIAIComparisonResult {
+  id: number;
   responses: AIResponse[];
   summary: {
     totalTokens: number;
@@ -48,8 +49,4 @@ export interface AIComparisonResult {
     >;
   };
   timestamp: string;
-}
-
-export interface UIAIComparisonResult extends AIComparisonResult {
-  id: number;
 }
