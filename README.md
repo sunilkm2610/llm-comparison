@@ -2,9 +2,9 @@
 
 A Next.js application that allows users to compare responses from three different AI models (OpenAI GPT-4o, Anthropic Claude 3 Sonnet, and XAI Grok) simultaneously. The tool provides detailed performance metrics, cost analysis, and maintains a comparison history using PostgreSQL.
 
-URL -
+URL - `https://llm-comparison-three.vercel.app/`
 
-## 📋 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 
@@ -70,16 +70,11 @@ CREATE INDEX IF NOT EXISTS idx_model_responses_provider ON model_responses(provi
 Create a `.env.local` file:
 
 ```bash
-# Database
 DATABASE_URL=postgresql://username:password@localhost:5432/ai_comparison_db
 
-# AI Provider API Keys
 OPENAI_API_KEY=your_openai_api_key_here
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
 XAI_API_KEY=your_xai_api_key_here
-
-# Optional: Use mock XAI if API not available
-USE_MOCK_XAI=false
 ```
 
 ### 5. Run the Application
@@ -90,7 +85,7 @@ npm run dev
 
 Visit `http://localhost:3000` to use the application.
 
-## 🎯 Technical Decisions and Tradeoffs
+## Technical Decisions and Tradeoffs
 
 ### 1. **Function-Based Architecture**
 
@@ -139,7 +134,7 @@ Visit `http://localhost:3000` to use the application.
 - Next.js specific (less portable)
 - Newer pattern (less community resources)
 
-## 🔮 Future Improvements
+## Future Improvements
 
 ### 1. **Enhanced AI Provider Support**
 
