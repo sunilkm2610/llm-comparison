@@ -61,7 +61,7 @@ const LLMSection = ({
               <div>
                 <div className="text-muted-foreground flex items-center gap-1">
                   <Clock className="h-3 w-3" />
-                  Tokens
+                  Total Tokens
                 </div>
                 <div className="font-semibold">
                   {response.usage.totalTokens.toLocaleString()}
@@ -78,6 +78,18 @@ const LLMSection = ({
                 </div>
                 <div className="font-semibold">
                   {formatCost(response.estimatedCost)}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Prompt Tokens</div>
+                <div className="font-semibold">
+                  {response.usage.promptTokens}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">Completion Tokens</div>
+                <div className="font-semibold">
+                  {response.usage.completionTokens}
                 </div>
               </div>
               <div>
